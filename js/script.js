@@ -259,10 +259,32 @@
     tagList.innerHTML = allTagsHTML;
   }
 
+  function generateAuthorsList() {
+    let allAuthors = {};
+    let allAuthorsHTML = '';
+    const articles = document.querySelectorAll('article');
+    for (let article of articles) {
+      const author = article.getAttribute('data-author');
+      if (!allAuthors.hasOwnProperty(author)) {
+        allAuthors[author] = 1;
+      } else {
+        allAuthors[author]++;
+      }
+    }
+    for (let author in allAuthors) {
+      let linkHTML = `<li><a href="#author-${author}">${author}</a>(${allAuthors[author]})</li>`;
+      allAuthorsHTML += linkHTML;
+    }
+
+    const authorsList = document.querySelector('.list.authors');
+    authorsList.innerHTML = allAuthorsHTML;
+  }
+
   generateTags();
   generateAuthors();
   generateTitleLinks();
   generateTagsList();
+  generateAuthorsList();
   addClickListenersToTags();
   addClickListenersToAuthors();
 }

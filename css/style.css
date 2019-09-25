@@ -129,6 +129,7 @@ body {
 
 .list.tags li {
   display: inline-block;
+  margin-left: 4px;
 }
 
 /*# sourceMappingURL=style.css.map */
