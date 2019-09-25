@@ -45,7 +45,9 @@
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
     optArticleTagsSelector = '.post-tags .list',
-    optArticleAuthorsSelector = '.post-author';
+    optArticleAuthorsSelector = '.post-author',
+    optCloudClassCount = 5,
+    optCloudClassPrefix = 'tag-size-';
   function generateTitleLinks(customSelector = '') {
     // console.log('custom selector = ' + customSelector);
     const titleList = document.querySelector(optTitleListSelector);
@@ -76,6 +78,14 @@
     for (let link of links) {
       link.addEventListener('click', titleClickHandler);
     }
+  }
+
+  function calculateTagClass(count, params) {
+    const normalizedCount = count - params.min;
+    const normalizedMax = params.max - params.min;
+    const percentage = normalizedCount / normalizedMax;
+    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+    return classNumber;
   }
 
   function generateTags() {
@@ -208,9 +218,51 @@
     /* END LOOP: for each link */
   }
 
+  function calcualteTagsParams(tags) {
+    const params = {
+      min: 100,
+      max: 0
+    };
+    for (let tag in tags) {
+      if (tags[tag] < params.min) params.min = tags[tag];
+      else if (tags[tag] > params.max) params.max = tags[tag];
+    }
+
+    return params;
+  }
+
+  function generateTagsList() {
+    let allTags = {};
+    let allTagsHTML = '';
+    const articles = document.querySelectorAll('article');
+    for (let article of articles) {
+      const tags = article.getAttribute('data-tags').split(' ');
+      for (let tag of tags) {
+        if (!allTags.hasOwnProperty(tag)) {
+          allTags[tag] = 1;
+        } else {
+          allTags[tag]++;
+        }
+      }
+    }
+    const tagsParams = calcualteTagsParams(allTags);
+    for (let tag in allTags) {
+      let linkHTML = `<li><a class="tag-size-${calculateTagClass(
+        allTags[tag],
+        tagsParams
+      )}" href="#tag-${tag}">${tag}</a></li>`;
+      allTagsHTML += linkHTML;
+    }
+
+    console.log(tagsParams);
+    const tagList = document.querySelector('.tags');
+    tagList.innerHTML = allTagsHTML;
+  }
+
   generateTags();
   generateAuthors();
   generateTitleLinks();
+  generateTagsList();
   addClickListenersToTags();
   addClickListenersToAuthors();
 }
