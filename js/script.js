@@ -10,6 +10,9 @@
     ),
     authorLink: Handlebars.compile(
       document.querySelector('#template-author-link').innerHTML
+    ),
+    tagCloudLink: Handlebars.compile(
+      document.querySelector('#template-tag-cloud-link').innerHTML
     )
   };
 
@@ -158,7 +161,7 @@
 
   function generateTagsList() {
     let allTags = {};
-    let allTagsHTML = '';
+    const allTagsData = { tags: [] };
     const articles = document.querySelectorAll('article');
     for (let article of articles) {
       const tags = article.getAttribute('data-tags').split(' ');
@@ -172,16 +175,16 @@
     }
     const tagsParams = calcualteTagsParams(allTags);
     for (let tag in allTags) {
-      let linkHTML = `<li><a class="tag-size-${calculateTagClass(
-        allTags[tag],
-        tagsParams
-      )}" href="#tag-${tag}">${tag}</a></li>`;
-      allTagsHTML += linkHTML;
+      allTagsData.tags.push({
+        tag: tag,
+        count: allTags[tag],
+        className: calculateTagClass(allTags[tag], tagsParams)
+      });
     }
 
     //console.log(tagsParams);
     const tagList = document.querySelector('.tags');
-    tagList.innerHTML = allTagsHTML;
+    tagList.innerHTML = templates.tagCloudLink(allTagsData);
   }
 
   function generateAuthorsList() {
