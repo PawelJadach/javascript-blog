@@ -70,12 +70,16 @@
 
     for (let article of articles) {
       const wrapper = article.querySelector(optArticleTagsSelector);
-      let html = '';
       const tags = article.getAttribute('data-tags').split(' ');
+      // console.log(tags);
       for (let tag of tags) {
-        html += `<li><a href="#tag-${tag}">${tag}</a></li> `;
+        const tagData = {
+          tag: tag
+        };
+        const tagHTML = templates.tagLink(tagData);
+        console.log(tagHTML);
+        wrapper.insertAdjacentHTML('beforeend', tagHTML);
       }
-      wrapper.insertAdjacentHTML('beforeend', html);
     }
   }
 
@@ -172,7 +176,7 @@
       allTagsHTML += linkHTML;
     }
 
-    console.log(tagsParams);
+    //console.log(tagsParams);
     const tagList = document.querySelector('.tags');
     tagList.innerHTML = allTagsHTML;
   }
