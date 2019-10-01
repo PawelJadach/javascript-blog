@@ -7,6 +7,9 @@
     ),
     tagLink: Handlebars.compile(
       document.querySelector('#template-tag-link').innerHTML
+    ),
+    authorLink: Handlebars.compile(
+      document.querySelector('#template-author-link').innerHTML
     )
   };
 
@@ -87,10 +90,10 @@
     const articles = document.querySelectorAll('article');
     for (let article of articles) {
       const wrapper = article.querySelector(optArticleAuthorsSelector);
-      let html = '';
       const author = article.getAttribute('data-author');
-      html = `by <a href="#author-${author}">${author}</a>`;
-      wrapper.insertAdjacentHTML('beforeend', html);
+      const authorHTMLData = { author: author };
+      const authorHTML = templates.authorLink(authorHTMLData);
+      wrapper.insertAdjacentHTML('beforeend', authorHTML);
     }
   }
 
