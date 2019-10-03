@@ -200,9 +200,9 @@
       if (uniqueAuthors.indexOf(author) < 0) uniqueAuthors.push(author);
     }
 
-    const authorsData = {};
+    const authorsData = { authors: {} };
     allAuthors.forEach(function(i) {
-      authorsData[i] = (authorsData[i] || 0) + 1;
+      authorsData.authors[i] = (authorsData.authors[i] || 0) + 1;
     });
     console.log(authorsData);
     const authorsList = document.querySelector('.list.authors');
