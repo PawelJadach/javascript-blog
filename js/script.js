@@ -191,8 +191,8 @@
   }
 
   function generateAuthorsList() {
-    const allAuthorsData = { authors: [] };
-
+    let allAuthors = [];
+    let uniqueAuthors = [];
     const articles = document.querySelectorAll('article');
     for (let article of articles) {
       const author = article.getAttribute('data-author');
@@ -204,7 +204,7 @@
     allAuthors.forEach(function(i) {
       authorsData[i] = (authorsData[i] || 0) + 1;
     });
-
+    console.log(authorsData);
     const authorsList = document.querySelector('.list.authors');
     const authorsListHTML = templates.authorsListLink(authorsData);
     authorsList.insertAdjacentHTML('beforeend', authorsListHTML);
